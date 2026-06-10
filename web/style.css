@@ -1,0 +1,208 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: #f4f4f4;
+    color: #333;
+}
+
+.container {
+    width: 90%;
+    max-width: 1100px;
+    margin: 30px auto;
+    background: #fff;
+    padding: 24px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.container.small {
+    max-width: 420px;
+}
+
+h1 {
+    margin-bottom: 20px;
+    font-size: 1.6rem;
+    color: #222;
+}
+
+h2 {
+    margin: 20px 0 12px;
+    font-size: 1.2rem;
+    color: #444;
+}
+
+nav {
+    background: #222;
+    padding: 12px 24px;
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
+
+nav a {
+    color: #fff;
+    text-decoration: none;
+    font-size: 0.95rem;
+}
+
+nav a:hover {
+    color: #1db954;
+}
+
+nav .nav-user {
+    margin-left: auto;
+    color: #aaa;
+    font-size: 0.9rem;
+}
+
+/* Formularios */
+form label {
+    display: block;
+    margin: 12px 0 4px;
+    font-weight: bold;
+    font-size: 0.9rem;
+}
+
+form input,
+form select,
+form textarea {
+    width: 100%;
+    padding: 8px 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 0.95rem;
+}
+
+form textarea {
+    height: 80px;
+    resize: vertical;
+}
+
+button,
+.btn {
+    display: inline-block;
+    margin-top: 14px;
+    padding: 9px 20px;
+    background: #1db954;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.95rem;
+    text-decoration: none;
+}
+
+button:hover,
+.btn:hover {
+    background: #17a347;
+}
+
+.btn-danger {
+    background: #e74c3c;
+}
+
+.btn-danger:hover {
+    background: #c0392b;
+}
+
+/* Tablas */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 16px;
+    font-size: 0.9rem;
+}
+
+th {
+    background: #222;
+    color: #fff;
+    padding: 10px;
+    text-align: left;
+}
+
+td {
+    padding: 8px 10px;
+    border-bottom: 1px solid #eee;
+}
+
+tr:hover td {
+    background: #f9f9f9;
+}
+
+/* Mensajes */
+.error {
+    background: #fde;
+    border: 1px solid #e74c3c;
+    color: #c0392b;
+    padding: 10px;
+    border-radius: 4px;
+    margin-bottom: 12px;
+}
+
+.success {
+    background: #e6f9ee;
+    border: 1px solid #1db954;
+    color: #155724;
+    padding: 10px;
+    border-radius: 4px;
+    margin-bottom: 12px;
+}
+
+/* Paginacion */
+.pagination {
+    margin-top: 16px;
+    display: flex;
+    gap: 8px;
+}
+
+.pagination a {
+    padding: 6px 12px;
+    background: #eee;
+    border-radius: 4px;
+    text-decoration: none;
+    color: #333;
+    font-size: 0.9rem;
+}
+
+.pagination a.active {
+    background: #1db954;
+    color: #fff;
+}
+
+/* Cards */
+.card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 16px;
+    margin-top: 16px;
+}
+
+.card {
+    background: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 16px;
+}
+
+.card h3 {
+    font-size: 1rem;
+    margin-bottom: 6px;
+}
+
+.card p {
+    font-size: 0.85rem;
+    color: #666;
+}
+
+.card a {
+    display: inline-block;
+    margin-top: 10px;
+    font-size: 0.85rem;
+    color: #1db954;
+    text-decoration: none;
+}
