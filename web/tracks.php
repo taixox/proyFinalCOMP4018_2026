@@ -13,49 +13,71 @@ $error   = '';
 
 //insertar track
 if ($action === 'insert' && $_SERVER['REQUEST_METHOD'] === 'POST') {
-    $track_id      = trim($_POST['track_id']);
-    $track_name    = trim($_POST['track_name']);
-    $duration_ms   = (int)$_POST['duration_ms'];
-    $explicit      = isset($_POST['explicit']) ? 1 : 0;
-    $popularity    = (int)$_POST['popularity'];
+    $track_id       = trim($_POST['track_id']);
+    $track_name     = trim($_POST['track_name']);
+    $duration_ms    = (int)$_POST['duration_ms'];
+    $explicit       = isset($_POST['explicit']) ? 1 : 0;
+    $popularity     = (int)$_POST['popularity'];
     $time_signature = (int)$_POST['time_signature'];
-    $album_id      = trim($_POST['album_id']);
+    $album_id       = trim($_POST['album_id']);
 
+    //validaciones de integridad
     if (empty($track_id) || empty($track_name) || empty($album_id)) {
-        $error = "Por favor completa todos los campos obligatorios.";
-        $action = 'insert';
+        $error = "Error: track_id, nombre y album son obligatorios.";
+    } elseif ($popularity < 0 || $popularity > 100) {
+        $error = "Violacion de integridad: popularidad debe estar entre 0 y 100.";
+    } elseif ($duration_ms <= 0) {
+        $error = "Violacion de integridad: duracion debe ser mayor a 0.";
     } else {
-        try {
-            $stmt = $pdo->prepare("INSERT INTO Track (track_id, track_name, duration_ms, explicit, popularity, time_signature, album_id)
-                                   VALUES (?, ?, ?, ?, ?, ?, ?)");
-            $stmt->execute([$track_id, $track_name, $duration_ms, $explicit, $popularity, $time_signature, $album_id]);
-            $message = "Track insertado exitosamente.";
-            $action = 'list';
-        } catch (PDOException $e) {
-            $error = "Error al insertar: " . $e->getMessage();
-            $action = 'insert';
+        //Verificar que el track_id no exista ya
+        $check = $pdo->prepare("SELECT track_id FROM Track WHERE track_id = ?");
+        $check->execute([$track_id]);
+        if ($check->fetch()) {
+            $error = "Violacion de integridad: ya existe un track con ese ID (clave primaria duplicada).";
+        } else {
+            try {
+                $stmt = $pdo->prepare("INSERT INTO Track (track_id, track_name, duration_ms, explicit, popularity, time_signature, album_id)
+                                       VALUES (?, ?, ?, ?, ?, ?, ?)");
+                $stmt->execute([$track_id, $track_name, $duration_ms, $explicit, $popularity, $time_signature, $album_id]);
+                $message = "Track insertado exitosamente.";
+                $action = 'list';
+            } catch (PDOException $e) {
+                $error = "Error de base de datos: " . $e->getMessage();
+                $action = 'insert';
+            }
         }
     }
+    if ($error) $action = 'insert';
 }
 
 //modificar track
 if ($action === 'edit' && $_SERVER['REQUEST_METHOD'] === 'POST') {
-    $track_id      = trim($_POST['track_id']);
-    $track_name    = trim($_POST['track_name']);
-    $duration_ms   = (int)$_POST['duration_ms'];
-    $explicit      = isset($_POST['explicit']) ? 1 : 0;
-    $popularity    = (int)$_POST['popularity'];
+    $track_id       = trim($_POST['track_id']);
+    $track_name     = trim($_POST['track_name']);
+    $duration_ms    = (int)$_POST['duration_ms'];
+    $explicit       = isset($_POST['explicit']) ? 1 : 0;
+    $popularity     = (int)$_POST['popularity'];
     $time_signature = (int)$_POST['time_signature'];
 
-    try {
-        $stmt = $pdo->prepare("UPDATE Track SET track_name=?, duration_ms=?, explicit=?, popularity=?, time_signature=?
-                               WHERE track_id=?");
-        $stmt->execute([$track_name, $duration_ms, $explicit, $popularity, $time_signature, $track_id]);
-        $message = "Track actualizado exitosamente.";
-        $action = 'list';
-    } catch (PDOException $e) {
-        $error = "Error al actualizar: " . $e->getMessage();
+    //validaciones de integrdad
+    if (empty($track_name)) {
+        $error = "Error: el nombre del track es obligatorio.";
+    } elseif ($popularity < 0 || $popularity > 100) {
+        $error = "Violacion de integridad: popularidad debe estar entre 0 y 100.";
+    } elseif ($duration_ms <= 0) {
+        $error = "Violacion de integridad: duracion debe ser mayor a 0.";
+    } else {
+        try {
+            $stmt = $pdo->prepare("UPDATE Track SET track_name=?, duration_ms=?, explicit=?, popularity=?, time_signature=?
+                                   WHERE track_id=?");
+            $stmt->execute([$track_name, $duration_ms, $explicit, $popularity, $time_signature, $track_id]);
+            $message = "Track actualizado exitosamente.";
+            $action = 'list';
+        } catch (PDOException $e) {
+            $error = "Error de base de datos: " . $e->getMessage();
+        }
     }
+    if ($error) $action = 'edit';
 }
 
 //obtener track para editar
